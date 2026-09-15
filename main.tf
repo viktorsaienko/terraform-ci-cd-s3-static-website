@@ -25,7 +25,7 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
 
 # 4. Политика S3 bucket для разрешения публичного чтения
 resource "aws_s3_bucket_policy" "public_read" {
-  bucket = aws_s3_bucket.website.id
+  bucket     = aws_s3_bucket.website.id
   depends_on = [aws_s3_bucket_public_access_block.public_access]
 
   policy = jsonencode({
