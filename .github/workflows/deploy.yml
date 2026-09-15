@@ -1,0 +1,29 @@
+name: Deploy Website to AWS S3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production  # Тянет и секреты, и переменные из окружения production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Deploy index.html to S3
+      run: |
+        # Здесь также можно использовать переменную, чтобы не хардкодить регион, если нужно
+        aws s3 cp index.html s3://cmtr-z53rb65y-bucket-1789493478/index.html
+
